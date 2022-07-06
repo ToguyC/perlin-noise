@@ -84,7 +84,6 @@ void display() {
 
     zoff += 0.1;
 
-    glColor4f(0, 0, 0, 0.01);
     for (int i = 0; i < PARTICLE_COUNT; i++) {
         particle_follow(particles[i], flow_field, cols, scale);
         particle_update(particles[i]);
@@ -106,7 +105,7 @@ int main(int argc, char **argv) {
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     int window = glutCreateWindow("Perlin noise");
 
-    glClearColor(1, 1, 1, 1);
+    glClearColor(0, 0, 0, 1);
     glClear(GL_COLOR_BUFFER_BIT);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();

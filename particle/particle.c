@@ -1,4 +1,5 @@
 #include "particle.h"
+#include "../utilities/utilities.h"
 #include <stdio.h>
 
 particle_t *particle_create() {
@@ -7,6 +8,7 @@ particle_t *particle_create() {
     new->pos = vec2_create(rand() % 1200, rand() % 800);
     new->vel = vec2_create_zero();
     new->acc = vec2_create_zero();
+    new->h = 0;
 
     new->prev.x = new->pos.x;
     new->prev.y = new->pos.y;
@@ -30,6 +32,12 @@ void particle_apply_force(particle_t *p, vec2 f) {
 }
 
 void particle_show(particle_t *p) {
+    rgb_t rgb = hsv2rgb(p->h, 100, 100);
+    p->h += 0.5;
+    if (p->h >= 360)
+        p->h = 0;
+
+    glColor4f(rgb.R, rgb.G, rgb.B, 0.05);
     glBegin(GL_LINES);
     glVertex2d(p->pos.x, p->pos.y);
     glVertex2d(p->prev.x, p->prev.y);

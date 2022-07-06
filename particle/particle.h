@@ -8,6 +8,7 @@
 
 typedef struct _particle_t {
     vec2 pos, prev, vel, acc;
+    float h;
 } particle_t;
 
 particle_t *particle_create();
