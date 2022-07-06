@@ -36,13 +36,17 @@ void display() {
     glClearColor(0.2, 0.2, 0.2, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glBegin(GL_LINE_STRIP);
-    float xoff = start;
-    for (int x = 0; x < WINDOW_WIDTH; x++) {
-        glColor3f(1, 1, 1);
-        float y = perlin2d(xoff, 0, 0.1, 4) * WINDOW_HEIGHT;
-        glVertex2f(x, y);
-        xoff += inc;
+    glBegin(GL_POINTS);
+    float yoff = start;
+    for (int y = 0; y < WINDOW_HEIGHT; y++) {
+        float xoff = start;
+        for (int x = 0; x < WINDOW_WIDTH; x++) {
+            glColor3f(1, 1, 1);
+            float y = perlin2d(xoff, yoff, 0.1, 4) * WINDOW_HEIGHT;
+            glVertex2f(x, y);
+            xoff += inc;
+        }
+        yoff += inc;
     }
     glEnd();
 
