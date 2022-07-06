@@ -4,12 +4,13 @@
 #include <GL/freeglut_std.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <sys/time.h>
 
-// https://stackoverflow.com/questions/3417837/what-is-the-best-way-to-suppress-a-unused-variable-x-warning
+// https: //
+// stackoverflow.com/questions/3417837/what-is-the-best-way-to-suppress-a-unused-variable-x-warning
 #ifdef UNUSED
 #elif defined(__GNUC__)
 #define UNUSED(x) UNUSED_##x __attribute__((unused))
@@ -25,9 +26,11 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 800
 
+int seed = 0;
 float inc = 1;
 int scale = 5;
 int cols, rows;
+float zoff = 0;
 
 void draw_timer() {
     glutPostRedisplay();
@@ -43,7 +46,7 @@ void display() {
         float xoff = 0;
 
         for (int x = 0; x < cols; x++) {
-            float b = perlin2d(xoff, yoff, 0.1, 4);
+            float b = perlin3d(xoff, yoff, zoff, 0.1, 4);
             glColor3f(1, 1, 1);
             float a = b * (2 * M_PI);
             vec2 v = vec2_create(cos(a), sin(a));
@@ -58,14 +61,17 @@ void display() {
         yoff += inc;
     }
 
+    zoff += 0.1;
+
     glutSwapBuffers();
 }
 
-int main(int argc, char** argv) {
+int main(int argc, char **argv) {
     // Window initialization
     glutInit(&argc, argv);
     glutSetOption(GLUT_MULTISAMPLE, 16);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH |
+                        GLUT_MULTISAMPLE);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     int window = glutCreateWindow("Perlin noise");
 
@@ -76,7 +82,7 @@ int main(int argc, char** argv) {
 
     struct timeval t;
     gettimeofday(&t, NULL);
-    pseed(t.tv_usec);
+    seed = t.tv_usec;
 
     cols = (int)(WINDOW_WIDTH / scale);
     rows = (int)(WINDOW_HEIGHT / scale);
@@ -90,3 +96,41 @@ int main(int argc, char** argv) {
     glutDestroyWindow(window);
     return EXIT_SUCCESS;
 }
+
+// #include <stdio.h>
+// #include <time.h>
+// //#include <unistd.h>
+// #include "perlin/perlin.h"
+
+// // 0123456789
+// //  `'"+*0&#@
+// char d[11] = " `'\"+*0&#@";
+
+// int main() {
+//     int i = 0, j = 0, c = 0, z = 0;
+//     double n;
+//     clock_t stall;
+
+//     while (1) {
+//         stall = clock();
+//         for (i = 0; i < 50; i++) {
+//             for (j = 0; j < 50; j++) {
+//                 n = pnoise3d(j * 0.1, i * 0.1, z * 0.1, 0.7, 5, 12124);
+//                 c = (int)((n + 1) * 4);
+//                 if (c < 0)
+//                     c = 0;
+//                 if (c > 9)
+//                     c = 9;
+//                 printf("%c", d[c]);
+//             }
+//             printf("\n");
+//         }
+//         printf("\n\n");
+//         z++;
+
+//         while (clock() - stall < 100000) {
+//         }
+//     }
+
+//     return 0;
+// }
