@@ -1,7 +1,7 @@
 # see https://yuukidach.github.io/2019/08/05/makefile-learning/
 # Variable setup
 CC:=gcc
-CFLAGS:=-g -Ofast -Wall -Wextra -fsanitize=address -fsanitize=leak -std=gnu11
+CFLAGS:=-g -O3 -Wall -Wextra -fsanitize=address -fsanitize=leak -std=gnu11
 LIBS:=-lm -lGL -lGLU -lglut
 VPATH:= # Library name
 
