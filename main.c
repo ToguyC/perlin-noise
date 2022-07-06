@@ -25,7 +25,6 @@
 #define WINDOW_HEIGHT 800
 
 float inc = 0.1;
-float start = 0;
 
 void draw_timer() {
     glutPostRedisplay();
@@ -37,20 +36,18 @@ void display() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBegin(GL_POINTS);
-    float yoff = start;
+    float yoff = 0;
     for (int y = 0; y < WINDOW_HEIGHT; y++) {
-        float xoff = start;
+        float xoff = 0;
         for (int x = 0; x < WINDOW_WIDTH; x++) {
-            glColor3f(1, 1, 1);
-            float y = perlin2d(xoff, yoff, 0.1, 4) * WINDOW_HEIGHT;
+            float b = perlin2d(xoff, yoff, 0.1, 4);
+            glColor3f(b, b, b);
             glVertex2f(x, y);
             xoff += inc;
         }
         yoff += inc;
     }
     glEnd();
-
-    start += inc;
 
     glutSwapBuffers();
 }
