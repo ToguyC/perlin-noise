@@ -1,4 +1,5 @@
 #include "perlin/perlin.h"
+#include "vec2/vec2.h"
 #include <GL/freeglut.h>
 #include <GL/freeglut_std.h>
 #include <GL/gl.h>
@@ -24,7 +25,9 @@
 #define WINDOW_WIDTH 800
 #define WINDOW_HEIGHT 800
 
-float inc = 0.1;
+float inc = 1;
+int scale = 5;
+int cols, rows;
 
 void draw_timer() {
     glutPostRedisplay();
@@ -35,21 +38,25 @@ void display() {
     glClearColor(0.2, 0.2, 0.2, 1);
     glClear(GL_COLOR_BUFFER_BIT);
 
-    glBegin(GL_POINTS);
     float yoff = 0;
-    for (int y = 0; y < WINDOW_HEIGHT; y++) {
+    for (int y = 0; y < rows; y++) {
         float xoff = 0;
 
-        for (int x = 0; x < WINDOW_WIDTH; x++) {
+        for (int x = 0; x < cols; x++) {
             float b = perlin2d(xoff, yoff, 0.1, 4);
-            glColor3f(b, b, b);
-            glVertex2f(x, y);
+            glColor3f(1, 1, 1);
+            float a = b * (2 * M_PI);
+            vec2 v = vec2_create(cos(a), sin(a));
+
+            glBegin(GL_LINES);
+            glVertex2f(x * scale, y * scale);
+            glVertex2f(x * scale + (v.x * scale), y * scale + (v.y * scale));
+            glEnd();
             xoff += inc;
         }
 
         yoff += inc;
     }
-    glEnd();
 
     glutSwapBuffers();
 }
@@ -70,6 +77,10 @@ int main(int argc, char** argv) {
     struct timeval t;
     gettimeofday(&t, NULL);
     pseed(t.tv_usec);
+
+    cols = (int)(WINDOW_WIDTH / scale);
+    rows = (int)(WINDOW_HEIGHT / scale);
+
     glutDisplayFunc(display);
     glutTimerFunc(ONE_SECOND_IN_MILLISECONDS / REFRESH_RATE, draw_timer, 0);
 
