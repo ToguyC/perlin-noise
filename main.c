@@ -39,12 +39,14 @@ void display() {
     float yoff = 0;
     for (int y = 0; y < WINDOW_HEIGHT; y++) {
         float xoff = 0;
+
         for (int x = 0; x < WINDOW_WIDTH; x++) {
             float b = perlin2d(xoff, yoff, 0.1, 4);
             glColor3f(b, b, b);
             glVertex2f(x, y);
             xoff += inc;
         }
+
         yoff += inc;
     }
     glEnd();
@@ -56,8 +58,7 @@ int main(int argc, char** argv) {
     // Window initialization
     glutInit(&argc, argv);
     glutSetOption(GLUT_MULTISAMPLE, 16);
-    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH |
-                        GLUT_MULTISAMPLE);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GLUT_MULTISAMPLE);
     glutInitWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     int window = glutCreateWindow("Perlin noise");
 
